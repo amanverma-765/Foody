@@ -10,4 +10,7 @@ sealed interface FoodyDestinations {
 
     @Serializable
     data object Home: FoodyDestinations
+
+    @Serializable
+    data object Auth: FoodyDestinations
 }

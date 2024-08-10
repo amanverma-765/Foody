@@ -3,7 +3,7 @@ package org.techinowave.data.repo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.techinowave.data.mapper.MenuItemsMapper.toMenuItem
-import org.techinowave.data.supabase.SupabaseDataSource
+import org.techinowave.data.remote.supabase.SupabaseDataSource
 import org.techinowave.domain.model.FoodMenuItem
 import org.techinowave.domain.repo.MenuItemsRepository
 import org.techinowave.utils.ApiResponse

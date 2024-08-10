@@ -7,7 +7,7 @@ import io.github.jan.supabase.serializer.KotlinXSerializer
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import org.techinowave.data.BuildConfig
-import org.techinowave.data.supabase.SupabaseDataSource
+import org.techinowave.data.remote.supabase.SupabaseDataSource
 
 val remoteModule = module {
 

@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
             FoodyTheme {
                 KoinAndroidContext {
                     FoodyNavHost(
-                        startDestination = FoodyDestinations.Onboarding,
+                        startDestination = FoodyDestinations.Home,
                         modifier = Modifier.fillMaxSize()
                     )
                 }

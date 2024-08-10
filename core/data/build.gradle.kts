@@ -71,6 +71,8 @@ dependencies {
     implementation(libs.ktor.client.cio)
     // Ktx - Serialization
     implementation(libs.kotlinx.serialization.json)
+    // Datastore - Preferences
+    implementation(libs.androidx.datastore.preferences)
     implementation(project(":core:domain"))
     implementation(project(":core:utils"))
 }

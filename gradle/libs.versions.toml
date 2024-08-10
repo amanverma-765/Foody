@@ -21,6 +21,10 @@ supabaseBom = "2.5.4"
 uiTextGoogleFonts = "1.6.8"
 appcompat = "1.7.0"
 material = "1.12.0"
+datastorePreferences = "1.1.1"
+
+
+
 
 
 [libraries]
@@ -56,6 +60,11 @@ ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+
+
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -30,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,84 +42,97 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.techinowave.foody.R
+import org.techinowave.foody.presentation.features.home.viewmodel.HomeUiEvents
+import org.techinowave.foody.presentation.features.home.viewmodel.HomeUiStates
+import org.techinowave.foody.presentation.features.onboarding.viewmodel.OnboardingUiEvents
+import org.techinowave.foody.presentation.features.onboarding.viewmodel.OnboardingUiStates
+import org.techinowave.utils.ApiResponse
 
 
 @Composable
 fun FoodyOnboardingScreen(
     modifier: Modifier = Modifier,
+    uiEvent: (OnboardingUiEvents) -> Unit,
+    uiState: OnboardingUiStates,
     navigateToHome: () -> Unit
 ) {
 
-    Scaffold { innerPadding ->
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.primary)
-                .padding(innerPadding)
+    LaunchedEffect(key1 = uiState.userEntryResponse) {
+        when (uiState.userEntryResponse) {
+            is ApiResponse.Error -> Unit
+            is ApiResponse.Loading -> Unit
+            is ApiResponse.Success -> {
+                navigateToHome()
+            }
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary)
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxHeight(.5f)
+                .fillMaxWidth()
         ) {
+            Image(
+                painter = painterResource(id = R.drawable.delivery_service),
+                contentDescription = "Delivery Service",
+                modifier = Modifier
+                    .size(360.dp)
+                    .graphicsLayer(
+                        rotationY = 180f,
+                    )
+            )
+        }
+        Column(
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
+                .background(MaterialTheme.colorScheme.background)
+                .padding(32.dp)
+        ) {
+
+            Text(
+                text = "Get The Fastest\nFood Delivery",
+                style = MaterialTheme.typography.displaySmall.copy(
+                    fontWeight = FontWeight.ExtraBold
+                ),
+                textAlign = TextAlign.Center
+            )
+
+            Text(
+                text = "Welcome to Foody, where your favorite food and meals are just a tap away. Enjoy your fresh food delivery!",
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.ExtraBold,
+                ),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.alpha(.5f)
+            )
+
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .fillMaxHeight(.5f)
-                    .fillMaxWidth()
+                    .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                    .size(80.dp)
+                    .padding(6.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable {
+                        uiEvent(OnboardingUiEvents.SaveUserEntry)
+                    }
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.delivery_service),
-                    contentDescription = "Delivery Service",
-                    modifier = Modifier
-                        .size(360.dp)
-                        .graphicsLayer(
-                            rotationY = 180f,
-                        )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
+                    contentDescription = "Get Started",
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(30.dp)
                 )
-            }
-            Column(
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .offset(y = 25.dp)
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(topStartPercent = 10, topEndPercent = 10))
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(32.dp)
-            ) {
-
-                Text(
-                    text = "Get The Fastest\nFood Delivery",
-                    style = MaterialTheme.typography.displaySmall.copy(
-                        fontWeight = FontWeight.ExtraBold
-                    ),
-                    textAlign = TextAlign.Center
-                )
-
-                Text(
-                    text = "Welcome to Foody, where your favorite food and meals are just a tap away. Enjoy your fresh food delivery!",
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.ExtraBold,
-                    ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.alpha(.5f)
-                )
-
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
-                        .size(80.dp)
-                        .padding(6.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary)
-                        .clickable {
-                            navigateToHome()
-                        }
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
-                        contentDescription = "Get Started",
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(30.dp)
-                    )
-                }
             }
         }
     }

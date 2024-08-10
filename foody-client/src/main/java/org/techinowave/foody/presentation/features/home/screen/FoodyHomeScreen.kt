@@ -64,7 +64,9 @@ private const val TAG = "Home Screen"
 fun FoodyHomeScreen(
     modifier: Modifier = Modifier,
     uiEvent: (HomeUiEvents) -> Unit,
-    uiState: HomeUiStates
+    uiState: HomeUiStates,
+    navigateToOnboarding: () -> Unit,
+    navigateToLogin: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -76,6 +78,17 @@ fun FoodyHomeScreen(
 
     LaunchedEffect(key1 = Unit) {
         uiEvent(HomeUiEvents.GetMenuItems)
+        uiEvent(HomeUiEvents.GetUserEntry)
+    }
+
+    LaunchedEffect(key1 = uiState.userEntryResponse) {
+        when(val response = uiState.userEntryResponse) {
+            is ApiResponse.Error -> navigateToOnboarding()
+            is ApiResponse.Loading -> Unit
+            is ApiResponse.Success -> {
+                if (response.data.not()) navigateToOnboarding()
+            }
+        }
     }
 
     Scaffold(
@@ -147,7 +160,18 @@ fun FoodyHomeScreen(
                 }
             ) {
                 selectedMenuItem?.let { menuItem ->
-                    FoodyDetailScreen(context = context, menuItem = menuItem)
+                    FoodyDetailScreen(
+                        context = context,
+                        menuItem = menuItem,
+                        navigateToLogin = {
+                            coroutineScope.launch { sheetState.hide() }.invokeOnCompletion {
+                                if (!sheetState.isVisible) {
+                                    showBottomSheet = false
+                                }
+                                navigateToLogin()
+                            }
+                        }
+                    )
                 }
             }
         }

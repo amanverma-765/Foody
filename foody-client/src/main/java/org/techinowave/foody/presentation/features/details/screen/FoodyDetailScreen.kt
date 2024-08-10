@@ -41,7 +41,9 @@ import org.techinowave.foody.presentation.features.details.components.AddRemoveI
 fun FoodyDetailScreen(
     modifier: Modifier = Modifier,
     context: Context,
-    menuItem: FoodMenuItem
+    menuItem: FoodMenuItem,
+//    navigateToCart: () -> Unit,
+    navigateToLogin: () -> Unit
 ) {
 
     var itemCount by remember { mutableIntStateOf(1) }
@@ -86,7 +88,7 @@ fun FoodyDetailScreen(
             )
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { navigateToLogin() },
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .fillMaxWidth()

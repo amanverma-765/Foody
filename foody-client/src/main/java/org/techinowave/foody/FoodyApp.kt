@@ -4,6 +4,7 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
+import org.techinowave.data.koin.localModule
 import org.techinowave.data.koin.remoteModule
 import org.techinowave.data.koin.repositoryModule
 import org.techinowave.domain.koin.useCaseModule
@@ -21,7 +22,8 @@ class FoodyApp : Application() {
                 remoteModule,
                 repositoryModule,
                 useCaseModule,
-                presentationModule
+                presentationModule,
+                localModule
             )
         }
 

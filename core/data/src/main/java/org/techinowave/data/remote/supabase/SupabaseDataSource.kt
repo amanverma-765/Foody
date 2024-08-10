@@ -1,4 +1,4 @@
-package org.techinowave.data.supabase
+package org.techinowave.data.remote.supabase
 
 import android.util.Log
 import io.github.jan.supabase.SupabaseClient

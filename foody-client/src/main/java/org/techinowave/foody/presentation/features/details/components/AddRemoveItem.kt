@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
@@ -50,9 +52,11 @@ fun AddRemoveItem(
         Icon(
             imageVector = Icons.Rounded.Remove,
             contentDescription = "Remove",
-            modifier = Modifier.clickable {
-                if (count > 1) count--
-            }
+            modifier = Modifier
+                .clip(CircleShape)
+                .clickable {
+                    if (count > 1) count--
+                }
         )
 
         Text(
@@ -64,9 +68,11 @@ fun AddRemoveItem(
         Icon(
             imageVector = Icons.Rounded.Add,
             contentDescription = "Add",
-            modifier = Modifier.clickable {
-                count++
-            }
+            modifier = Modifier
+                .clip(CircleShape)
+                .clickable {
+                    count++
+                }
         )
     }
 }

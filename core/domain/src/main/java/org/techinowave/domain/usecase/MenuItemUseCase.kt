@@ -1,4 +1,4 @@
-package org.techinowave.foody.domain.usecase
+package org.techinowave.domain.usecase
 
 import org.techinowave.domain.usecase.menu.GetMenuItems
 
