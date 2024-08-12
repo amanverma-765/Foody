@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="foody-client">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-08-10T21:21:41.772536287Z">
+        <DropdownSelection timestamp="2024-08-11T12:35:10.778152634Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/home/ak47/.var/app/com.google.AndroidStudio/config/.android/avd/Pixel_8_API_35.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=4lkrqgz9uwqw8tci" />
             </handle>
           </Target>
         </DropdownSelection>

@@ -13,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.koin.androidx.compose.koinViewModel
 import org.techinowave.foody.presentation.features.auth.screen.FoodyAuthScreen
+import org.techinowave.foody.presentation.features.auth.viewmodel.AuthViewmodel
+import org.techinowave.foody.presentation.features.cart.screen.FoodyCartScreen
 import org.techinowave.foody.presentation.features.home.screen.FoodyHomeScreen
 import org.techinowave.foody.presentation.features.home.viewmodel.HomeViewModel
 import org.techinowave.foody.presentation.features.onboarding.screen.FoodyOnboardingScreen
@@ -29,10 +31,10 @@ fun FoodyNavHost(
     NavHost(
         navController = rootNavigator,
         startDestination = startDestination,
-        enterTransition = { slideInHorizontally(tween(600)) { it } },
-        exitTransition = { slideOutHorizontally(tween(600)) { -it } },
-        popEnterTransition = { slideInHorizontally(tween(600)) { -it } },
-        popExitTransition = { slideOutHorizontally(tween(600)) { it } },
+        enterTransition = { slideInHorizontally(tween(500)) { it } },
+        exitTransition = { slideOutHorizontally(tween(500)) { -it } },
+        popEnterTransition = { slideInHorizontally(tween(500)) { -it } },
+        popExitTransition = { slideOutHorizontally(tween(500)) { it } },
         modifier = modifier.fillMaxSize()
     ) {
 
@@ -69,6 +71,9 @@ fun FoodyNavHost(
                         }
                     }
                 },
+                navigateToCart = {
+                    rootNavigator.navigate(FoodyDestinations.Cart)
+                },
                 navigateToLogin = {
                     rootNavigator.navigate(FoodyDestinations.Auth)
                 }
@@ -76,7 +81,25 @@ fun FoodyNavHost(
         }
 
         composable<FoodyDestinations.Auth> {
-            FoodyAuthScreen()
+
+            val authVm = koinViewModel<AuthViewmodel>()
+            val authUiState by authVm.authUiState.collectAsState()
+
+            FoodyAuthScreen(
+                uiEvent = authVm::onEvent,
+                uiState = authUiState,
+                navigateToCart = {
+                    rootNavigator.navigate(FoodyDestinations.Cart) {
+                        popUpTo(FoodyDestinations.Auth) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+
+        composable<FoodyDestinations.Cart> {
+            FoodyCartScreen()
         }
     }
 }

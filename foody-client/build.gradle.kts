@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -20,6 +22,16 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField(
+            type ="String",
+            name = "googleClientId",
+            value = properties.getProperty("googleClientId")
+        )
+    }
+    buildFeatures {
+        buildConfig = true
     }
     buildTypes {
         release {
@@ -83,6 +95,10 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     // Navigation Compose
     implementation(libs.androidx.navigation.compose)
+    // Google - OneTap
+    implementation ("androidx.credentials:credentials:1.2.2")
+    implementation ("androidx.credentials:credentials-play-services-auth:1.2.2")
+    implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
     implementation(project(":core:data"))
     implementation(project(":core:domain"))
     implementation(project(":core:utils"))

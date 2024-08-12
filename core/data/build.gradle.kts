@@ -28,6 +28,11 @@ android {
             name = "supabaseApiKey",
             value = properties.getProperty("supabaseApiKey")
         )
+        buildConfigField(
+            type ="String",
+            name = "googleClientId",
+            value = properties.getProperty("googleClientId")
+        )
     }
     buildFeatures {
         buildConfig = true
@@ -67,6 +72,7 @@ dependencies {
     // Supabase
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.postgrest.kt)
+    implementation(libs.supabase.gotrue.kt)
     // Ktor
     implementation(libs.ktor.client.cio)
     // Ktx - Serialization

@@ -9,11 +9,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.techinowave.domain.usecase.MenuItemUseCase
 import org.techinowave.domain.usecase.PreferenceDbUseCase
+import org.techinowave.domain.usecase.UserAuthUseCase
 import org.techinowave.foody.utils.Constants.USER_ENTRY
 
 class HomeViewModel(
     private val menuItemsUseCase: MenuItemUseCase,
-    private val preferenceDbUseCase: PreferenceDbUseCase
+    private val preferenceDbUseCase: PreferenceDbUseCase,
+    private val userAuthUseCase: UserAuthUseCase
 ) : ViewModel() {
 
     private val _homeUiState = MutableStateFlow(HomeUiStates())
@@ -24,6 +26,10 @@ class HomeViewModel(
             HomeUiEvents.GetMenuItems -> getMenuItems()
             HomeUiEvents.GetUserEntry -> getUserEntry()
         }
+    }
+
+    init {
+        listenAuthStatus()
     }
 
     private fun getMenuItems() {
@@ -41,6 +47,16 @@ class HomeViewModel(
             preferenceDbUseCase.getFromPreference(key = USER_ENTRY).collect { response ->
                 _homeUiState.update { state ->
                     state.copy(userEntryResponse = response)
+                }
+            }
+        }
+    }
+
+    private fun listenAuthStatus() {
+        viewModelScope.launch {
+            userAuthUseCase.listenAuthState().collect { response ->
+                _homeUiState.update { state ->
+                    state.copy(authStatusResponse = response)
                 }
             }
         }

@@ -1,6 +1,5 @@
 package org.techinowave.data.remote.supabase
 
-import android.util.Log
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.flow.Flow
@@ -8,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 import org.techinowave.data.model.MenuItemDto
 import org.techinowave.utils.ApiResponse
 
-class SupabaseDataSource(
+class SupabaseDatabase(
     private val supabaseClient: SupabaseClient
 ) {
 

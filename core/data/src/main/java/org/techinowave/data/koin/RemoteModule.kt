@@ -2,12 +2,14 @@ package org.techinowave.data.koin
 
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.gotrue.Auth
 import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.serializer.KotlinXSerializer
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
 import org.techinowave.data.BuildConfig
-import org.techinowave.data.remote.supabase.SupabaseDataSource
+import org.techinowave.data.remote.supabase.SupabaseAuth
+import org.techinowave.data.remote.supabase.SupabaseDatabase
 
 val remoteModule = module {
 
@@ -23,8 +25,11 @@ val remoteModule = module {
                 }
             )
             install(Postgrest)
+            install(Auth)
         }
     }
 
-    single { SupabaseDataSource(supabaseClient = get()) }
+    single { SupabaseDatabase(supabaseClient = get()) }
+
+    single { SupabaseAuth(supabaseClient = get()) }
 }

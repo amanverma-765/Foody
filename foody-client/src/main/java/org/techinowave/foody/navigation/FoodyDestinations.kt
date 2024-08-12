@@ -13,4 +13,7 @@ sealed interface FoodyDestinations {
 
     @Serializable
     data object Auth: FoodyDestinations
+
+    @Serializable
+    data object Cart: FoodyDestinations
 }

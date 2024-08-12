@@ -3,35 +3,50 @@ package org.techinowave.foody.presentation.features.auth.screen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.compose.AsyncImage
+import org.techinowave.domain.model.AuthStatus
 import org.techinowave.foody.R
+import org.techinowave.foody.presentation.features.auth.viewmodel.AuthUiEvents
+import org.techinowave.foody.presentation.features.auth.viewmodel.AuthUiStates
+import org.techinowave.utils.ApiResponse
+
+const val TAG = "Auth Screen"
 
 @Composable
-fun FoodyAuthScreen(modifier: Modifier = Modifier) {
+fun FoodyAuthScreen(
+    modifier: Modifier = Modifier,
+    uiEvent: (AuthUiEvents) -> Unit,
+    uiState: AuthUiStates,
+    navigateToCart: () -> Unit
+) {
+
+    LaunchedEffect(key2 = Unit, key1 = uiState.authStatusResponse) {
+        when (val response = uiState.authStatusResponse) {
+            is ApiResponse.Error -> Unit
+            is ApiResponse.Loading -> Unit
+            is ApiResponse.Success -> {
+                when (response.data) {
+                    is AuthStatus.Authenticated -> navigateToCart()
+                    is AuthStatus.NotAuthenticated -> Unit
+                }
+            }
+        }
+    }
 
     Column(modifier = modifier.fillMaxSize()) {
 
@@ -68,28 +83,11 @@ fun FoodyAuthScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier.alpha(.5f)
             )
 
-            OutlinedButton(
-                shape = RoundedCornerShape(12.dp),
-                onClick = { /*TODO*/ }
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.google_icon),
-                        contentDescription = "Google",
-                        modifier = Modifier.size(40.dp)
-                    )
-                    Text(
-                        text = "Continue With Google",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.ExtraBold
-                        )
-                    )
+            GoogleOneTap(
+                onLoginClick = { token, nonce ->
+                    uiEvent(AuthUiEvents.SignInWithGoogle(token, nonce))
                 }
-            }
+            )
         }
     }
 }
-
